@@ -1,0 +1,71 @@
+10
+
+dir
+890
+http://192.168.0.193/svn/iRide/trunk/mmlGenerator/src/com/capsula/mml
+http://192.168.0.193/svn/iRide
+
+
+
+2009-12-18T15:08:26.293661Z
+831
+davi
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+d7518e05-1c0b-dd11-b5f0-0019d1013b4f
+
+MML.gwt.xml
+file
+
+
+
+
+2010-05-10T17:48:19.000000Z
+bc89af7b6f062901606d3c5acaa9dd1a
+2009-12-18T15:08:26.293661Z
+831
+davi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+398
+
+client
+dir
+
+core
+dir
+
+rebind
+dir
+
