@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/iRide/!svn/ver/831/trunk/mmlGenerator/src/com/capsula/mml/core
+END
+MHTMLLexer.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/iRide/!svn/ver/897/trunk/mmlGenerator/src/com/capsula/mml/core/MHTMLLexer.java
+END
+MMLVisitor.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/iRide/!svn/ver/897/trunk/mmlGenerator/src/com/capsula/mml/core/MMLVisitor.java
+END
+MHTML.g
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/iRide/!svn/ver/897/trunk/mmlGenerator/src/com/capsula/mml/core/MHTML.g
+END
+MMLNode.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/iRide/!svn/ver/897/trunk/mmlGenerator/src/com/capsula/mml/core/MMLNode.java
+END
+Tag.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/iRide/!svn/ver/897/trunk/mmlGenerator/src/com/capsula/mml/core/Tag.java
+END
+MHTMLParser.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/iRide/!svn/ver/897/trunk/mmlGenerator/src/com/capsula/mml/core/MHTMLParser.java
+END
