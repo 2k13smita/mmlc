@@ -203,11 +203,16 @@ public class MMLStatementGenerator implements MMLVisitor {
 			sourceWriter.println(parents.peek() + ".add(" + varName + ");");
 		} else {
 			if (fields == null || fields.isEmpty()) {
-				sourceWriter.println("TemplateWidget<" +
-						bindedTypeName +
-						"> root = new TemplateWidget<" +
-						bindedTypeName +
-						">(" + varName + ");");
+				if (bindedTypeName != null) {
+					sourceWriter.println("TemplateWidget<" +
+							bindedTypeName +
+							"> root = new TemplateWidget<" +
+							bindedTypeName +
+							">(" + varName + ");");
+				} else {
+					sourceWriter.println(
+							"TemplateWidget root = new TemplateWidget(" + varName + ");");
+				}
 			} else {
 				sourceWriter.println("TemplateWidget<" +
 						bindedTypeName +
@@ -233,15 +238,6 @@ public class MMLStatementGenerator implements MMLVisitor {
 				sourceWriter.println("}");
 				sourceWriter.outdent();
 				sourceWriter.println("};");
-				/*
-				 * TemplateWidget<NewOfferRidePageBuilder> root = new TemplateWidget<...>() {
-				 * 		public void bind (NewOfferRidePageBuilder target) {
-				 * 			target.fieldName = (fieldType) getChildByField("fieldName");
-				 * 			target.fieldName = (fieldType) getChildByField("fieldName");
-				 * 			target.fieldName = (fieldType) getChildByField("fieldName");
-				 * 		}
-				 * }
-				 */
 			}
 		}
 	}

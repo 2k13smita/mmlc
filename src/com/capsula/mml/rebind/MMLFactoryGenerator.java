@@ -27,6 +27,7 @@ import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
+import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
@@ -130,13 +131,15 @@ public class MMLFactoryGenerator extends Generator {
 			String msgSourceClassName = msgSourceClass.getValues().get(0);
 			sourceWriter.println("private final " + msgSourceClassName + " WM = GWT.create(" + msgSourceClassName + ".class);");
 		} catch (BadPropertyValueException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Type.WARN,
+					"No internationalization source set. " +
+					"Use @DefaultNodeContentType(NodeContentType.TEXT) to avoid errors " +
+					"or set i18nsource property on your module file.");
 		}
 	}
 
 	private void generateMethods(TreeLogger logger,GeneratorContext context, SourceWriter sourceWriter) {
-		Map<String, WidgetClass> externalWidgets = getExternalWidgets(context);
+		Map<String, WidgetClass> externalWidgets = getExternalWidgets(context, logger);
 		
 		 // init resource bundle 
         ResourceBundle bundle = ResourceBundle.getBundle(typeName); 
@@ -156,7 +159,10 @@ public class MMLFactoryGenerator extends Generator {
         		logger.log(TreeLogger.ERROR, "No corresponding method found for template " + key);
         	} else {
         		JClassType typeArg = getTypeArgument(method);
-        		List<JField> fieldsToBind = getBoundFields(typeArg);
+        		List<JField> fieldsToBind = null;
+        		if (typeArg != null) {
+        			fieldsToBind = getBoundFields(typeArg);
+        		}
         		
         		DefaultNodeContentType nodeContentType = method.getAnnotation(DefaultNodeContentType.class);
         		NodeContentType contentType = NodeContentType.I18N;
@@ -171,7 +177,7 @@ public class MMLFactoryGenerator extends Generator {
         } 
 	}
 
-	private Map<String, WidgetClass> getExternalWidgets(GeneratorContext context) {
+	private Map<String, WidgetClass> getExternalWidgets(GeneratorContext context, TreeLogger logger) {
 		Map<String, WidgetClass> externalWidgets = new HashMap<String, WidgetClass>();
 		PropertyOracle propOracle = context.getPropertyOracle();
 		try {
@@ -187,8 +193,7 @@ public class MMLFactoryGenerator extends Generator {
 			}
 			
 		} catch (BadPropertyValueException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Type.WARN, "No widgetFactory set. You will not be able to instantiate external widgets.");
 		} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -199,7 +204,11 @@ public class MMLFactoryGenerator extends Generator {
 	private JClassType getTypeArgument(JMethod method) {
 		JType returnType = method.getReturnType();
 		JParameterizedType parameterizedType = returnType.isParameterized();
-		JClassType typeArg = parameterizedType.getTypeArgs()[0];
+
+		JClassType typeArg = null;
+		if (parameterizedType != null) {
+			typeArg = parameterizedType.getTypeArgs()[0];
+		}
 		return typeArg;
 	}
 
@@ -218,9 +227,13 @@ public class MMLFactoryGenerator extends Generator {
 			ResourceBundle bundle, String key, JMethod method,
 			JClassType typeArg, List<JField> fieldsToBind,
 			NodeContentType contentType, Map<String, WidgetClass> externalWidgets) {
-		sourceWriter.print("public TemplateWidget<"); 
-		sourceWriter.print(typeArg.getSimpleSourceName()); 
-		sourceWriter.print("> "); 
+		sourceWriter.print("public TemplateWidget");
+		if (typeArg != null) {
+			sourceWriter.print("<");
+			sourceWriter.print(typeArg.getSimpleSourceName()); 
+			sourceWriter.print(">"); 
+		}
+		sourceWriter.print(" "); 
 		sourceWriter.print(Generator.escape(key)); 
 		sourceWriter.print(" (");
 		printParameters(sourceWriter, method);
@@ -230,8 +243,9 @@ public class MMLFactoryGenerator extends Generator {
 			String mmlCode = bundle.getString(key);
 			MMLNode mmlRoot = parse(mmlCode); 
 			
+			String typeArgClassName = typeArg != null ? typeArg.getSimpleSourceName() : null;
 			MMLStatementGenerator visitor = new MMLStatementGenerator(
-					sourceWriter, typeArg.getSimpleSourceName(),
+					sourceWriter, typeArgClassName,
 					fieldsToBind, contentType, externalWidgets);
 			mmlRoot.accept(visitor);
 			sourceWriter.println("return root;");
