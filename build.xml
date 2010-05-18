@@ -1,0 +1,40 @@
+<project name="MMLc buildfile" default="build">
+
+	<property file="build.properties"/>
+	<property name="releases.dir" value="releases"/>
+	<property name="temp.dir" value="temp" />
+	<property name="version" value="0.1.1"/>
+
+	<path id="project.class.path">
+		<pathelement location="${gwt.sdk}/gwt-user.jar" />
+		<fileset dir="${gwt.sdk}" includes="gwt-dev*.jar" />
+		<fileset dir="${antlr.dir}" includes="antlr*.jar" />
+	</path>
+
+	<target name="javac">
+		<mkdir dir="${temp.dir}"/>
+		<javac srcdir="src" destdir="${temp.dir}">
+			<classpath refid="project.class.path" />
+		</javac>
+		<copy todir="${temp.dir}">
+			<fileset dir="src" />
+		</copy>
+	</target>
+
+	<target name="build" depends="clear, javac">
+		<mkdir dir="${releases.dir}"/>
+		<jar destfile="${releases.dir}/mml.jar">
+			<fileset dir="${temp.dir}">
+				<include name="**/*.class" />
+				<include name="**/*.java" />
+				<include name="**/*.gwt.xml" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="clear">
+		<delete dir="${releases.dir}" />
+		<delete dir="${temp.dir}" />
+	</target>
+
+</project>
