@@ -1,14 +1,18 @@
 // $ANTLR 3.2 Sep 23, 2009 12:02:23 src/com/capsula/mml/core/MHTML.g 2010-05-14 11:56:07
  
 	package com.capsula.mml.core; 
-	import java.util.Stack;	
-	//import com.capsula.mml.core.MMLNode.Property;
+	import java.util.Stack;
 
-
-import org.antlr.runtime.*;
-import java.util.Stack;
-import java.util.List;
-import java.util.ArrayList;
+import org.antlr.runtime.BaseRecognizer;
+import org.antlr.runtime.BitSet;
+import org.antlr.runtime.DFA;
+import org.antlr.runtime.EarlyExitException;
+import org.antlr.runtime.NoViableAltException;
+import org.antlr.runtime.Parser;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.RecognizerSharedState;
+import org.antlr.runtime.Token;
+import org.antlr.runtime.TokenStream;
 
 public class MHTMLParser extends Parser {
     public static final String[] tokenNames = new String[] {
