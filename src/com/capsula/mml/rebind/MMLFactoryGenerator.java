@@ -165,7 +165,7 @@ public class MMLFactoryGenerator extends Generator {
         		}
         		
         		DefaultNodeContentType nodeContentType = method.getAnnotation(DefaultNodeContentType.class);
-        		NodeContentType contentType = NodeContentType.I18N;
+        		NodeContentType contentType = NodeContentType.TEXT;
         		if (nodeContentType != null) {
         			contentType = nodeContentType.value();
         		}
